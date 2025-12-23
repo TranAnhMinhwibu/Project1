@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Tìm kiếm giao dịch</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel = "stylesheet" href="styles/hompage.css">
+    <link rel="stylesheet" href="styles/sidebar.css">
+    <link rel="stylesheet" href="styles/header.css">
+    <link rel="stylesheet" href="styles/clientinfo.css">
+    <link rel="stylesheet" href="styles/modal.css">
+    <link rel="stylesheet" href="styles/transactioninfo.css">
+  </head>
+  <body>
+    <header class="header">
+      <div class="name">
+        FindTransaction
+      </div>
+    </header>
+
+    <nav class = "sidebar">
+      <a href="homepage.html">
+        <div class="sidebar-link">
+          <img src = "icons/bank.png">
+          <div class = "sidebar-text">Tìm kiếm bằng</div>
+          <div class = "sidebar-text">STK</div>
+        </div>
+      </a>
+      <a href="#">
+        <div class="sidebar-link chosen-link">
+          <img src = "icons/id-card.png">
+          <div class = "sidebar-text chosen-text">Tìm kiếm bằng</div>
+          <div class = "sidebar-text chosen-text">số CCCD</div>
+        </div>
+      </a>
+      </a>
+      <a href="searchbytransactionid.html">
+        <div class="sidebar-link sidebar-transaction-link">
+          <img src = "icons/transaction.png">
+          <div class = "sidebar-text">Tìm kiếm bằng</div>
+          <div class = "sidebar-text">mã giao dịch</div>
+        </div>
+      </a>
+    </nav>
+
+    <main>
+        <section class="main-content">
+          <div class="main-content-text">Tìm kiếm giao dịch bằng số CCCD</div>
+          <div class="main-content-search">
+            <input class="search-bar" type="text" placeholder="Nhập số CCCD">
+            <button class="search-button">
+              <img class="search-icon" src="icons/search.svg">
+              <!--<div class="tooltip">Tìm kiếm</div>-->
+              Tìm kiếm
+            </button>
+            <button class="setting-button">
+              <img class="setting-icon" src="icons/gear.png">
+              <div class = "setting-text" onclick="openModal()">
+              Cài đặt nâng cao
+              </div>
+              <!--<div class="tooltip">Search with your voice</div>-->
+            </button>
+          </div>
+          <div>
+          <section class="result-content">
+          </section>
+        </section>
+
+        
+      </main>
+
+      <div id="searchSettingModal" class="modal">
+        <div class="modal-content">
+          <h2 id="modalTitle">Tìm kiếm nâng cao</h2>
+          <form id = "searchSettingForm">
+            <div class="form-group">
+              <label>Giao dịch với tài khoản</label>
+              <input type="number" id="soCCCD" class="number-input" minlength="7" maxlength="20" placeholder="Nhập số CCCD">
+            </div>
+            <div class="form-group">
+              <label>Loại giao dịch</label>
+              <div class="checkbox-group">
+                <div class="checkbox-element">
+                  <label class="sub-labl">Gửi</label>
+                  <input type="checkbox" class="transaction-type-checkbox" checked="checked" id="sendTransaction">
+                </div>
+                <div class="checkbox-element">
+                  <label class="sub-labl">Nhận</label>
+                  <input type="checkbox" class="transaction-type-checkbox" checked="checked" id="reciveTransaction"> 
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Thời gian giao dịch</label>
+                <div class="time-input-group">
+                  <div class="input-time-element input-time-element-after">
+                    <label class="sub-labl">Sau ngày</label>
+                    <input type="datetime-local" class="datetime-input" id="afterDatetime">
+                  </div>
+                  <div class="input-time-element input-time-element-before">
+                    <label class="sub-labl">Trước ngày</label>
+                    <input type="datetime-local" class="datetime-input" id="beforeDatetime">
+                  </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Số tiền giao dịch</label>
+                <div class="money-input-group">
+                  <div class="money-input-element money-input-element-min">
+                    <label class="sub-labl">Số tiền tối thiểu</label>
+                    <input type="number" class="money-input" id="minMoney">
+                  </div>
+                  <div class="money-input-element money-input-element-max">
+                    <label class="sub-labl">Số tiền tối đa</label>
+                    <input type="number" class="money-input" id="maxMoney">
+                  </div>
+                </div>
+            </div>
+            <div class="form-group">
+              <p id="errorStatus"></p>
+            </div>
+            <div class="modal-actions">
+              <button type ="button" class="cancel-btn" onclick="closeModal()">Hủy</button>
+              <button type="submit" class="save-btn">Lưu</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <script type = "module" src = "scripts/searchbypersonalid.js"></script>
+  </body>
+</html>

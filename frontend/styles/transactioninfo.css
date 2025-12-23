@@ -1,0 +1,42 @@
+.transaction-info{
+  display: flex;
+  flex-direction: column;
+}
+
+.transaction-info-title{
+  font-size: 26px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.table-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 15px;
+    text-align: center;
+    width: 168px;
+    border-bottom: 1px solid #eee;
+}
+
+th {
+    background-color: hsl(0, 0%, 91%);
+    font-weight: 600;
+}
+
+.note-col{
+  width: 250px;
+}
+
+.note-col-data{
+  text-align: left;
+}

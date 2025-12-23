@@ -1,0 +1,97 @@
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 500px;
+}
+
+.form-group {margin-bottom: 1rem;}
+
+.form-group label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group .sub-labl{font-weight: 400;}
+
+.form-group input {
+  width: 100%;
+  padding: 4px;
+  box-sizing: border-box;
+}
+
+.form-group .number-input{
+  height: 38px;
+  font-size: 15px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.transaction-type-checkbox {
+  display: inline;
+  width: fit-content;
+}
+
+.checkbox-group {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
+}
+
+.checkbox-element{
+  display: flex;
+  flex-direction: row;
+}
+
+.form-group .money-input{
+  height: 38px;
+  font-size: 15px;
+}
+
+.form-group .datetime-input{
+  height: 38px;
+  font-size: 15px;
+}
+
+.form-group p{
+  color: red;
+  font-size: 12px;
+}
+
+.money-input-group{display: flex;}
+.money-input-element{flex: 1;}
+.money-input-element-min{margin-right: 5px;}
+.money-input-element-max{margin-left: 5px;}
+
+.time-input-group {display: flex;}
+.input-time-element {flex: 1;}
+.input-time-element-after{margin-right: 5px;}
+.input-time-element-befor{margin-left: 5px;}
+
+.cancel-btn{
+  padding: 9px 20px;
+  cursor: pointer;
+  border: none;
+}
+
+.save-btn{
+  padding: 9px 20px;
+  background-color: rgb(112, 252, 93);
+  cursor: pointer;
+  border: none;
+}

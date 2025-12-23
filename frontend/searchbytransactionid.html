@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Tìm kiếm giao dịch</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel = "stylesheet" href="styles/hompage.css">
+    <link rel="stylesheet" href="styles/sidebar.css">
+    <link rel="stylesheet" href="styles/header.css">
+    <link rel="stylesheet" href="styles/transactioninfo.css">
+  </head>
+  <body>
+    <header class="header">
+      <div class="name">
+        FindTransaction
+      </div>
+    </header>
+
+    <nav class = "sidebar">
+      <a href="homepage.html">
+        <div class="sidebar-link">
+          <img src = "icons/bank.png">
+          <div class = "sidebar-text">Tìm kiếm bằng</div>
+          <div class = "sidebar-text">STK</div>
+        </div>
+      </a>
+      <a href="searchbypersonalid.html">
+        <div class="sidebar-link">
+          <img src = "icons/id-card.png">
+          <div class = "sidebar-text">Tìm kiếm bằng</div>
+          <div class = "sidebar-text">số CCCD</div>
+        </div>
+      </a>
+      </a>
+      <a href="#">
+        <div class="sidebar-link sidebar-transaction-link chosen-link">
+          <img src = "icons/transaction.png">
+          <div class = "sidebar-text chosen-text">Tìm kiếm bằng</div>
+          <div class = "sidebar-text chosen-text">mã giao dịch</div>
+        </div>
+      </a>
+    </nav>
+
+    <main>
+        <section class="main-content">
+          <div class="main-content-text">Tìm kiếm giao dịch bằng mã giao dịch</div>
+          <div class="main-content-search">
+            <input class="search-bar" type="text" placeholder="Nhập mã giao dịch">
+            <button class="search-button">
+              <img class="search-icon" src="icons/search.svg">
+              <!--<div class="tooltip">Tìm kiếm</div>-->
+              Tìm kiếm
+            </button>
+          </div>
+          <div>
+          <section class="result-content">
+          </section>
+        </section>
+
+        
+      </main>
+      <script type = "module" src = "scripts/searchbytransactionid.js"></script>
+  </body>
+</html>

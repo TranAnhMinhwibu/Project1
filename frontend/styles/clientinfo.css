@@ -1,0 +1,29 @@
+.client-info{
+  background-color: hsl(0, 0%, 91%);
+  width: 700px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 10px;
+  align-self: center;
+}
+
+.client-info-title{
+  font-size: 26px;
+  margin-bottom: -22px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.client-info-element{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.client-info-specific{
+  padding-left: 10px;
+  padding-right: 10px;
+  flex: 1;
+}

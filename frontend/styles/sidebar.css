@@ -1,0 +1,62 @@
+.sidebar {
+  margin-top: 60px;
+
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  top: 0;
+  background-color: rgb(230, 230, 230);
+  width: 100px;
+  z-index: 200;
+  padding-top: 5px;
+}
+
+.sidebar-link{
+  height: 74px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.sidebar-link img {
+  height: 30px;
+  margin-bottom: 4px;
+}
+
+.sidebar-link:hover {
+  background-color: rgb(235, 235, 235)
+}
+
+.sidebar-transaction-link img{
+  height: 25px;
+}
+
+.sidebar-link div {
+  font-size: 12px;
+}
+
+.sidebar-text {
+  text-align: center;
+  font-weight: bold;
+}
+
+.chosen-link {
+  background-color: rgb(153, 153, 153);
+}
+
+.chosen-link:hover {
+  background-color: rgb(153, 153, 153);
+}
+
+.chosen-text {
+  color: black;
+}
+
+a {
+  color: gray;
+  text-decoration: none;
+}
+
