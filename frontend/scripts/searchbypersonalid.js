@@ -75,74 +75,87 @@
 /*document.querySelector('.result-content').innerHTML = '<div class = "can-not-find">Không tìm thấy tài khoản!</div>'*/
 
 //variable cho tìm kiếm cao
-let soCCCDLienQuan = '';
+import { renderClientInfo, renderTransactionTable, renderMessage } from './utils.js';
+
+let soTaiKhoanLienQuan = ''; // Lưu ý: Trong file HTML searchbypersonalid bạn dùng ID là soCCCD ở modal, nhưng logic nên là lọc theo STK liên quan
 let sendTransaction = true;
 let reciveTransaction = true;
 let afterTime = '';
 let beforeTime = '';
 let minMoney = '';
-let maxMoney ='';
-
-//giá trị ban đầu khi chưa hoặc không nhập vào tìm kiếm cao
+let maxMoney = '';
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('searchSettingForm').addEventListener('submit', handleFormSubmit);
-})
+    document.querySelector('.search-button').addEventListener('click', handleSearch);
+    document.getElementById('searchSettingForm').addEventListener('submit', handleSettingSubmit);
+});
 
-async function handleFormSubmit(e){
-  e.preventDefault();
+async function handleSearch() {
+    const inputElement = document.querySelector('.search-bar');
+    const cccd = inputElement.value.trim();
+    const resultContent = document.querySelector('.result-content');
 
-  soCCCDLienQuan = document.getElementById('soCCCD').value;
-  if(document.getElementById('sendTransaction').checked)
-  {
-    sendTransaction = true;
-  } else {
-    sendTransaction = false;
-  }
-  
-  if(document.getElementById('reciveTransaction').checked)
-  {
-    reciveTransaction = true;
-  } else {
-    reciveTransaction = false;
-  }
+    if (!cccd) {
+        resultContent.innerHTML = renderMessage('Vui lòng nhập số CCCD!');
+        return;
+    }
 
-  afterTime = document.getElementById('afterDatetime').value;
-  beforeTime = document.getElementById('beforeDatetime').value;
-  
-  minMoney = document.getElementById('minMoney').value;
-  maxMoney = document.getElementById('maxMoney').value;
-  
-  if(((minMoney!='')&&(maxMoney!=''))&&Number(maxMoney)<Number(minMoney))
-  {
-    document.getElementById('errorStatus').innerText = 'Số tiền tối thiểu không thể lớn hơn số tiền tối đa!';
-  }
-  else if(((afterTime!='')&&(beforeTime)!='')&&Date(afterTime)>Date(beforeTime))
-  {
-    document.getElementById('errorStatus').innerText = 'Ngày bắt đầu phải trước ngày kết thúc!';
-  }
-  else
-  {
+    resultContent.innerHTML = '<div style="margin-top:15px">Đang tìm kiếm...</div>';
+
+    try {
+        const response = await fetch('http://localhost:3000/api/search/identity', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                socialNumber: cccd,
+                relatedAccount: soTaiKhoanLienQuan,
+                afterTime, beforeTime, minMoney, maxMoney,
+                sendTransaction, reciveTransaction
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            resultContent.innerHTML = renderMessage(data.message);
+        } else {
+            const html = renderClientInfo(data.client) + renderTransactionTable(data.transactions);
+            resultContent.innerHTML = html;
+        }
+    } catch (err) {
+        console.error(err);
+        resultContent.innerHTML = renderMessage('Lỗi kết nối tới Server!');
+    }
+}
+
+function handleSettingSubmit(e) {
+    e.preventDefault();
+    // Lưu ý: Trong HTML của bạn ID input trong modal là "soCCCD" nhưng logic tìm kiếm nâng cao thường là tìm giao dịch với "Số tài khoản" khác
+    // Tôi giả sử bạn muốn tìm giao dịch liên quan đến một STK khác
+    soTaiKhoanLienQuan = document.getElementById('soCCCD').value; 
+    
+    sendTransaction = document.getElementById('sendTransaction').checked;
+    reciveTransaction = document.getElementById('reciveTransaction').checked;
+    afterTime = document.getElementById('afterDatetime').value;
+    beforeTime = document.getElementById('beforeDatetime').value;
+    minMoney = document.getElementById('minMoney').value;
+    maxMoney = document.getElementById('maxMoney').value;
+
+    if (minMoney && maxMoney && Number(maxMoney) < Number(minMoney)) {
+        document.getElementById('errorStatus').innerText = 'Lỗi khoảng tiền!';
+        return;
+    }
+    if (afterTime && beforeTime && new Date(afterTime) > new Date(beforeTime)) {
+        document.getElementById('errorStatus').innerText = 'Lỗi khoảng thời gian!';
+        return;
+    }
     closeModal();
-  }
 }
 
 window.openModal = function() {
-  const modal = document.getElementById('searchSettingModal');
-  modal.style.display = 'flex';
-  document.getElementById('searchSettingForm').reset();
+    document.getElementById('searchSettingModal').style.display = 'flex';
 }
-
 window.closeModal = function() {
-  document.getElementById('errorStatus').innerText = '';
-  document.getElementById('searchSettingModal').style.display = 'none';
+    document.getElementById('errorStatus').innerText = '';
+    document.getElementById('searchSettingModal').style.display = 'none';
 }
-
-const searchButton = document.querySelector('.search-button');
-searchButton.addEventListener( 'click' , () => {
-  const inputElement = document.querySelector('.search-bar');
-  if(inputElement.value === '')
-  {
-    document.querySelector('.result-content').innerHTML = '<div class = "can-not-find">Vui lòng nhập số CCCD!</div>'
-  }
-});

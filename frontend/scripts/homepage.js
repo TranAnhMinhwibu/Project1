@@ -75,75 +75,90 @@
 /*document.querySelector('.result-content').innerHTML = '<div class = "can-not-find">Không tìm thấy tài khoản!</div>'*/
 
 //variable cho tìm kiếm cao
+import { renderClientInfo, renderTransactionTable, renderMessage } from './utils.js';
+
+// Các biến toàn cục cho Advanced Search
 let soTaiKhoanLienQuan = '';
 let sendTransaction = true;
 let reciveTransaction = true;
 let afterTime = '';
 let beforeTime = '';
 let minMoney = '';
-let maxMoney ='';
-
-//giá trị ban đầu khi chưa hoặc không nhập vào tìm kiếm cao
+let maxMoney = '';
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('searchSettingForm').addEventListener('submit', handleFormSubmit);
-})
-
-async function handleFormSubmit(e){
-  e.preventDefault();
-
-  soTaiKhoanLienQuan = document.getElementById('soTaiKhoan').value;
-  if(document.getElementById('sendTransaction').checked)
-  {
-    sendTransaction = true;
-  } else {
-    sendTransaction = false;
-  }
-  
-  if(document.getElementById('reciveTransaction').checked)
-  {
-    reciveTransaction = true;
-  } else {
-    reciveTransaction = false;
-  }
-
-  afterTime = document.getElementById('afterDatetime').value;
-  beforeTime = document.getElementById('beforeDatetime').value;
-  
-  minMoney = document.getElementById('minMoney').value;
-  maxMoney = document.getElementById('maxMoney').value;
-  
-  if(((minMoney!='')&&(maxMoney!=''))&&Number(maxMoney)<Number(minMoney))
-  {
-    document.getElementById('errorStatus').innerText = 'Số tiền tối thiểu không thể lớn hơn số tiền tối đa!';
-  }
-  else if(((afterTime!='')&&(beforeTime)!='')&&Date(afterTime)>Date(beforeTime))
-  {
-    document.getElementById('errorStatus').innerText = 'Ngày bắt đầu phải trước ngày kết thúc!';
-  }
-  else
-  {
-    closeModal();
-  }
-}
-
-window.openModal = function() {
-  const modal = document.getElementById('searchSettingModal');
-  modal.style.display = 'flex';
-  document.getElementById('searchSettingForm').reset();
-}
-
-window.closeModal = function() {
-  document.getElementById('errorStatus').innerText = '';
-  document.getElementById('searchSettingModal').style.display = 'none';
-}
-
-const searchButton = document.querySelector('.search-button');
-searchButton.addEventListener( 'click' , () => {
-  const inputElement = document.querySelector('.search-bar');
-  if(inputElement.value === '')
-  {
-    document.querySelector('.result-content').innerHTML = '<div class = "can-not-find">Vui lòng nhập số tài khoản!</div>'
-  }
+    // Xử lý nút tìm kiếm
+    document.querySelector('.search-button').addEventListener('click', handleSearch);
+    // Xử lý form setting modal
+    document.getElementById('searchSettingForm').addEventListener('submit', handleSettingSubmit);
 });
 
+async function handleSearch() {
+    const inputElement = document.querySelector('.search-bar');
+    const accountNum = inputElement.value.trim();
+    const resultContent = document.querySelector('.result-content');
+
+    if (!accountNum) {
+        resultContent.innerHTML = renderMessage('Vui lòng nhập số tài khoản!');
+        return;
+    }
+
+    resultContent.innerHTML = '<div style="margin-top:15px">Đang tìm kiếm...</div>';
+
+    try {
+        const response = await fetch('http://localhost:3000/api/search/account', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                accountNumber: accountNum,
+                relatedAccount: soTaiKhoanLienQuan,
+                afterTime, beforeTime, minMoney, maxMoney,
+                sendTransaction, reciveTransaction
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            resultContent.innerHTML = renderMessage(data.message);
+        } else {
+            const html = renderClientInfo(data.client) + renderTransactionTable(data.transactions);
+            resultContent.innerHTML = html;
+        }
+    } catch (err) {
+        console.error(err);
+        resultContent.innerHTML = renderMessage('Lỗi kết nối tới Server!');
+    }
+}
+
+// Logic Modal (Giữ nguyên logic của bạn nhưng làm gọn lại)
+function handleSettingSubmit(e) {
+    e.preventDefault();
+    soTaiKhoanLienQuan = document.getElementById('soTaiKhoan').value;
+    sendTransaction = document.getElementById('sendTransaction').checked;
+    reciveTransaction = document.getElementById('reciveTransaction').checked;
+    afterTime = document.getElementById('afterDatetime').value;
+    beforeTime = document.getElementById('beforeDatetime').value;
+    minMoney = document.getElementById('minMoney').value;
+    maxMoney = document.getElementById('maxMoney').value;
+
+    if (minMoney && maxMoney && Number(maxMoney) < Number(minMoney)) {
+        document.getElementById('errorStatus').innerText = 'Số tiền tối thiểu không thể lớn hơn tối đa!';
+        return;
+    }
+    if (afterTime && beforeTime && new Date(afterTime) > new Date(beforeTime)) {
+        document.getElementById('errorStatus').innerText = 'Ngày bắt đầu phải trước ngày kết thúc!';
+        return;
+    }
+    
+    closeModal();
+}
+
+// Global functions for HTML onclick
+window.openModal = function() {
+    document.getElementById('searchSettingModal').style.display = 'flex';
+}
+window.closeModal = function() {
+    document.getElementById('errorStatus').innerText = '';
+    document.getElementById('searchSettingModal').style.display = 'none';
+}
