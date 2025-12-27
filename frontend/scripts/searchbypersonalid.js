@@ -86,9 +86,32 @@ let minMoney = '';
 let maxMoney = '';
 
 document.addEventListener('DOMContentLoaded', () => {
+    // 1. Lắng nghe nút Tìm kiếm
     document.querySelector('.search-button').addEventListener('click', handleSearch);
+    
+    // 2. Lắng nghe Form submit (Nút Lưu trong modal)
     document.getElementById('searchSettingForm').addEventListener('submit', handleSettingSubmit);
+
+    // 3. [MỚI] Lắng nghe nút mở Modal (Thay thế cho onclick="openModal()")
+    const btnOpenModal = document.getElementById('btnOpenModal');
+    // Hoặc dùng class nếu không muốn sửa ID trong HTML: document.querySelector('.setting-button')
+    if (btnOpenModal) {
+        btnOpenModal.addEventListener('click', () => {
+             document.getElementById('searchSettingModal').style.display = 'flex';
+        });
+    }
+
+    // 4. [MỚI] Lắng nghe nút Hủy (Thay thế cho onclick="closeModal()")
+    const btnCancel = document.querySelector('.cancel-btn');
+    if (btnCancel) {
+        btnCancel.addEventListener('click', closeModal);
+    }
 });
+
+function closeModal() {
+    document.getElementById('errorStatus').innerText = '';
+    document.getElementById('searchSettingModal').style.display = 'none';
+}
 
 async function handleSearch() {
     const inputElement = document.querySelector('.search-bar');
