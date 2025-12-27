@@ -28,13 +28,25 @@ exports.searchByAccount = async (req, res) => {
 exports.searchBySocialID = async (req, res) => {
     try {
         const { 
-            socialNumber, relatedAccount, afterTime, beforeTime, 
-            minMoney, maxMoney, sendTransaction, reciveTransaction 
+            socialNumber, 
+            relatedSocialNumber, // <--- Nhận tham số mới này
+            afterTime, beforeTime, 
+            minMoney, maxMoney, 
+            sendTransaction, reciveTransaction 
         } = req.body;
 
         const [rows] = await db.execute(
             'CALL sp_SearchBySocialID(?, ?, ?, ?, ?, ?, ?, ?)',
-            [socialNumber, relatedAccount || null, afterTime || null, beforeTime || null, minMoney || null, maxMoney || null, sendTransaction, reciveTransaction]
+            [
+                socialNumber, 
+                relatedSocialNumber || null, // Truyền CCCD liên quan vào đây
+                afterTime || null, 
+                beforeTime || null, 
+                minMoney || null, 
+                maxMoney || null, 
+                sendTransaction, 
+                reciveTransaction
+            ]
         );
 
         if (!rows[0] || rows[0].length === 0) {

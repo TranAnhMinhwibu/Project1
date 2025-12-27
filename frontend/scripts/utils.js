@@ -50,7 +50,32 @@ export function renderClientInfo(client) {
 // Render bảng giao dịch
 export function renderTransactionTable(transactions) {
     if (!transactions || transactions.length === 0) {
-        return '<div style="margin-top:20px; font-size:18px;">Không tìm thấy giao dịch nào thỏa mãn điều kiện.</div>';
+        return `
+        <div class="transaction-info">
+      <p class="transaction-info-title">Thông tin giao dịch</p>
+      <div class="table-container">
+        <table id="transaction-table">
+          <thead>
+            <tr>
+              <th>Mã giao dịch</th>
+              <th>NH người gửi</th>
+              <th>STK gửi</th>
+              <th>NH người nhận</th>
+              <th>STK nhận</th>
+              <th>Số tiền</th>
+              <th>Thời gian</th>
+              <th class="note-col">Ghi chú</th>
+            </tr>
+          </thead>
+          <tbody class="transaction-data">
+            <tr>
+              <td colspan = 8>Không tồn tại giao dịch</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+        `;
     }
 
     const rows = transactions.map(t => `

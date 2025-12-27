@@ -77,7 +77,7 @@
 //variable cho tìm kiếm cao
 import { renderClientInfo, renderTransactionTable, renderMessage } from './utils.js';
 
-let soTaiKhoanLienQuan = ''; // Lưu ý: Trong file HTML searchbypersonalid bạn dùng ID là soCCCD ở modal, nhưng logic nên là lọc theo STK liên quan
+let soCCCDLienQuan = ''; // Lưu ý: Trong file HTML searchbypersonalid bạn dùng ID là soCCCD ở modal, nhưng logic nên là lọc theo STK liên quan
 let sendTransaction = true;
 let reciveTransaction = true;
 let afterTime = '';
@@ -107,8 +107,8 @@ async function handleSearch() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                socialNumber: cccd,
-                relatedAccount: soTaiKhoanLienQuan,
+                socialNumber: cccd, 
+                relatedSocialNumber: soCCCDLienQuan, // <--- Gửi CCCD liên quan (người muốn lọc)
                 afterTime, beforeTime, minMoney, maxMoney,
                 sendTransaction, reciveTransaction
             })
@@ -130,9 +130,10 @@ async function handleSearch() {
 
 function handleSettingSubmit(e) {
     e.preventDefault();
-    // Lưu ý: Trong HTML của bạn ID input trong modal là "soCCCD" nhưng logic tìm kiếm nâng cao thường là tìm giao dịch với "Số tài khoản" khác
-    // Tôi giả sử bạn muốn tìm giao dịch liên quan đến một STK khác
-    soTaiKhoanLienQuan = document.getElementById('soCCCD').value; 
+
+    // 1. Lấy giá trị từ ô input có id="soCCCD"
+    const cccdInput = document.getElementById('soCCCD').value.trim();
+    soCCCDLienQuan = cccdInput; 
     
     sendTransaction = document.getElementById('sendTransaction').checked;
     reciveTransaction = document.getElementById('reciveTransaction').checked;
@@ -142,18 +143,15 @@ function handleSettingSubmit(e) {
     maxMoney = document.getElementById('maxMoney').value;
 
     if (minMoney && maxMoney && Number(maxMoney) < Number(minMoney)) {
-        document.getElementById('errorStatus').innerText = 'Lỗi khoảng tiền!';
+        document.getElementById('errorStatus').innerText = 'Số tiền tối thiểu không thể lớn hơn tối đa!';
         return;
     }
     if (afterTime && beforeTime && new Date(afterTime) > new Date(beforeTime)) {
-        document.getElementById('errorStatus').innerText = 'Lỗi khoảng thời gian!';
+        document.getElementById('errorStatus').innerText = 'Ngày bắt đầu phải trước ngày kết thúc!';
         return;
     }
+    
     closeModal();
-}
-
-window.openModal = function() {
-    document.getElementById('searchSettingModal').style.display = 'flex';
 }
 window.closeModal = function() {
     document.getElementById('errorStatus').innerText = '';
