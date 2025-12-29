@@ -106,7 +106,7 @@ async function handleSearch() {
     resultContent.innerHTML = '<div style="margin-top:15px">Đang tìm kiếm...</div>';
 
     try {
-        const response = await fetch('http://localhost:3000/api/search/account', {
+        const response = await fetch('http://192.168.1.10:3000/api/search/account', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

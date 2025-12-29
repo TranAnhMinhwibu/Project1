@@ -12,6 +12,7 @@ app.use(express.json());
 app.use('/api/search', searchRoutes);
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server đang chạy tại http://localhost:${PORT}`);
+// Thêm '0.0.0.0' vào tham số thứ 2
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server is running on port ${PORT}`);
 });
