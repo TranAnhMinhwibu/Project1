@@ -1,4 +1,4 @@
-# Project1
+# Bank Searching
 
 cần cài đặt mysql và extension live sever trên vscode để chạy
 cấu trúc sql trong folder sql file
